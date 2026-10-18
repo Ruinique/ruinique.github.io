@@ -149,3 +149,9 @@
   overflow-y: hidden;
   padding-block: 0.35rem;
 }
+
+/* 深色下公式比正文再亮一点，细笔画更清楚 */
+[data-theme="dark"] .app-prose .katex,
+[data-theme="dark"] .app-prose .katex-display {
+  color: #f5f7fb;
+}
