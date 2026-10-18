@@ -1,0 +1,18 @@
+{
+  "workspace": "Ruiyi Zhan’s Space",
+  "synced_at": "2026-10-18T10:06:54.751Z",
+  "pages": [
+    {
+      "id": "3fdc82b072cb8019b75dd2337be26aeb",
+      "title": "个人学习",
+      "file": "Notion/个人学习.md",
+      "last_edited": "2026-10-18T06:20:46.839Z"
+    },
+    {
+      "id": "3fdc82b072cb802699a8f7407649ef87",
+      "title": "🕶️ 从位置编码到实际训练框架和模型架构中的多模态位置编码",
+      "file": "Notion/个人学习/🕶️ 从位置编码到实际训练框架和模型架构中的多模态位置编码.md",
+      "last_edited": "2026-10-18T09:56:02.661Z"
+    }
+  ]
+}
