@@ -13,6 +13,7 @@ Notion API 需要 token，而 token 不适合放进构建环境长期保存。�
 ```
 Notion/
 ├── .notion-sync.json      # 页面清单：id、标题、文件路径、最后修改时间
+├── .blog-meta.json        # 按页面 id 保存 slug、tags、类型、摘要（重新同步不会丢）
 ├── 个人学习.md             # 目录页（frontmatter type: container，会被跳过）
 ├── 个人学习/
 │   └── ....md             # 文章
@@ -23,6 +24,7 @@ Notion/
 ## 同步步骤
 
 1. 重新从 Notion 拉取页面（覆盖 `Notion/` 下的文件）。
+   - 在 pi 里可以直接输入 `/sync-notion`，会按固定流程同步、构建、自检、提交，推送前再问你。
 2. 运行 `npm run sync:content`。
 3. 检查 `src/content/` 下生成的文件，`npm run dev` 预览。
 
@@ -67,3 +69,23 @@ description: "..."
 - **公式**：`$$...$$` 和 `$...$` 原样保留，构建时由 KaTeX 渲染，不依赖浏览器端 JS。
 - **标题**：正文开头的 H1 会被去掉，页面标题由模板渲染。
 - **清理**：同步脚本会删除上一轮生成、这次已不存在的文章（靠 frontmatter 里的 `notion_id` 识别）。
+
+## 手写字段放哪儿
+
+`slug`、`tags`、`type`、`published`、`summary` 这类需要人判断的字段写在 `Notion/.blog-meta.json`：
+
+```json
+{
+  "pages": {
+    "<notion page id>": {
+      "type": "post",
+      "slug": "my-post",
+      "tags": ["标签一"],
+      "published": "2026-10-18",
+      "summary": "一句话摘要"
+    }
+  }
+}
+```
+
+同步 Markdown 时按 id 查这张表补 frontmatter，所以重新同步不会把手写信息冲掉。`type: "container"` 表示目录页，不进站点。

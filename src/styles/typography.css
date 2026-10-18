@@ -136,3 +136,16 @@
     }
   }
 }
+
+/* KaTeX 继承的是 .prose 默认正文色，深色模式下会变成深灰、几乎看不清 */
+.app-prose .katex,
+.app-prose .katex-display {
+  color: var(--foreground);
+}
+
+/* 长公式在窄屏上横向滚动，不撑破布局 */
+.app-prose .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-block: 0.35rem;
+}

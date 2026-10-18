@@ -1,0 +1,15 @@
+{
+  "pages": {
+    "3fdc82b072cb8019b75dd2337be26aeb": {
+      "type": "container"
+    },
+    "3fdc82b072cb802699a8f7407649ef87": {
+      "type": "post",
+      "slug": "multimodal-positional-encoding",
+      "tags": ["位置编码", "RoPE", "多模态", "Transformer"],
+      "categories": ["个人学习"],
+      "published": "2026-10-18",
+      "summary": "从 Self-Attention 为什么缺位置信息讲起，逐步推到 Sinusoidal、RoPE、二维与三维 M-RoPE，以及 Qwen2-VL / Qwen3-VL 里的频率分配、Interleaving 和 YaRN。"
+    }
+  }
+}

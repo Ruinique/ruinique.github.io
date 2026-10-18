@@ -10,6 +10,7 @@ import { resolve } from "node:path";
 const syncFile = resolve("Notion/.notion-sync.json");
 const postsDir = resolve("src/content/posts");
 const pagesDir = resolve("src/content/pages");
+const metaFile = resolve("Notion/.blog-meta.json");
 const author = "Ruiyi Zhan";
 
 if (!existsSync(syncFile)) {
@@ -18,6 +19,10 @@ if (!existsSync(syncFile)) {
 }
 
 const state = JSON.parse(await readFile(syncFile, "utf8"));
+// 同步会覆盖 Markdown，slug / tags / 摘要这类手写信息放在 meta 里，重新同步也不会丢
+const meta = existsSync(metaFile)
+  ? JSON.parse(await readFile(metaFile, "utf8"))
+  : { pages: {} };
 await mkdir(postsDir, { recursive: true });
 await mkdir(pagesDir, { recursive: true });
 
@@ -31,15 +36,16 @@ for (const item of state.pages || []) {
   }
 
   const { front, body } = parseFrontmatter(await readFile(file, "utf8"));
-  const type = normalizeType(front.type, body);
+  const override = meta.pages?.[item.id] || {};
+  const type = normalizeType(override.type ?? front.type, body);
   if (!type) {
     console.log(`Skip container page: ${front.title || item.title}`);
     continue;
   }
 
   const title = front.title || item.title;
-  const slug = front.slug || slugify(title);
-  const description = front.summary || buildSummary(body);
+  const slug = override.slug || front.slug || slugify(title);
+  const description = override.summary || front.summary || buildSummary(body);
   const content = normalizeParagraphs(stripLeadingHeading(body));
 
   if (type === "page") {
@@ -54,10 +60,10 @@ for (const item of state.pages || []) {
         title,
         description,
         content,
-        tags: toStringArray(front.tags),
-        published: front.published || item.last_edited,
+        tags: toStringArray(override.tags ?? front.tags),
+        published: override.published || front.published || item.last_edited,
         updated: item.last_edited,
-        featured: Boolean(front.featured),
+        featured: Boolean(override.featured ?? front.featured),
         notionId: item.id,
       }),
       "utf8"
